@@ -1,0 +1,6 @@
+compile_model: true
+interupt_steps: 5000
+learning_rate: 3.0e-05
+total_epochs: null
+total_steps: 5000
+weight_decay: 0.0001
