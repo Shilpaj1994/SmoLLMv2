@@ -7,11 +7,11 @@
 
 ## SpeedUp
 
-- mantice of 10 `high` instead of `highest`
+- [x] mantice of 10 `high` instead of `highest`
 - use `bfloat16` only for logits and loss
-- torch.compile()
-- attention mechanism modification `Flash Attention`
-- vocab size as a multiple of 2^ power
+- [x] torch.compile()
+- [x] attention mechanism modification `Flash Attention`
+- [x] vocab size as a multiple of 2^ power
 
 
 
