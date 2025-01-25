@@ -2,3 +2,4 @@ experiments/
 references/
 S13.ipynb
 last.ckpt
+*.ckpt
