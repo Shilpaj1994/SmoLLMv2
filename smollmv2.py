@@ -208,6 +208,10 @@ class SmollmV2(nn.Module):
 
         # weight initialization
         self.apply(self._init_weights)
+        
+        # Compile the model if torch version supports it
+        if hasattr(torch, 'compile'):
+            self.forward = torch.compile(self.forward)
 
     def _init_weights(self, module):
         if isinstance(module, nn.Linear):

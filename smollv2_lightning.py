@@ -38,7 +38,8 @@ class LitSmollmv2(pl.LightningModule):
         weight_decay=OptimizerConfig.weight_decay, 
         total_epochs=None, 
         total_steps=None,
-        interupt_steps=SmollmConfig.max_steps
+        interupt_steps=SmollmConfig.max_steps,
+        compile_model=True
     ):
         """
         Constructor
@@ -46,6 +47,7 @@ class LitSmollmv2(pl.LightningModule):
         :param weight_decay: Weight decay for the optimizer
         :param total_epochs: Total number of epochs (optional)
         :param total_steps: Total number of steps (optional)
+        :param compile_model: Whether to compile the model for faster training
         Note: Provide either total_epochs or total_steps, not both
         """
         super().__init__()
@@ -63,6 +65,11 @@ class LitSmollmv2(pl.LightningModule):
         
         # Initialize the model
         self.model = SmollmV2(SmollmConfig())
+        
+        # Compile the model if requested and supported
+        if compile_model and hasattr(torch, 'compile'):
+            print("Compiling model for faster training...")
+            self.model = torch.compile(self.model)
         
         # Print total model parameters
         total_params = sum(p.numel() for p in self.model.parameters())
@@ -337,6 +344,11 @@ def train_model(epochs=None, steps=None, ckpt_path=None, interupt_steps=SmollmCo
     :param interupt_steps: Number of steps after which to interrupt training
     Note: Provide either epochs or steps, not both
     """
+    # Set compilation mode for PyTorch 2.0+
+    if hasattr(torch, 'compile'):
+        torch._dynamo.config.suppress_errors = True
+        torch._dynamo.config.verbose = False
+    
     torch.set_float32_matmul_precision('high')
     
     # Initialize data module with reduced workers and batch size
@@ -353,7 +365,7 @@ def train_model(epochs=None, steps=None, ckpt_path=None, interupt_steps=SmollmCo
     # Setup callbacks with reduced frequency
     checkpoint_callback = ModelCheckpoint(
         dirpath='checkpoints',
-        filename='gpt-{step:05d}-{val_loss:.2f}',
+        filename='smollmv2-{step:05d}-{val_loss:.2f}',
         save_top_k=CheckpointConfig.save_top_k,  # Save only the best model
         monitor=CheckpointConfig.monitor,  # Monitor training loss instead of validation loss
         mode=CheckpointConfig.mode,
@@ -365,7 +377,7 @@ def train_model(epochs=None, steps=None, ckpt_path=None, interupt_steps=SmollmCo
     lr_monitor = LearningRateMonitor(logging_interval='step')
     
     # Setup logger
-    logger = TensorBoardLogger("lightning_logs", name="gpt", log_graph=True)
+    logger = TensorBoardLogger("lightning_logs", name="smollmv2", log_graph=True)
     
     # Add gradient scaler for mixed precision training
     scaler = torch.cuda.amp.GradScaler() if torch.cuda.is_available() else None
