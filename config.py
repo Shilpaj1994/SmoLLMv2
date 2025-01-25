@@ -38,7 +38,7 @@ class SmollmConfig:
     num_workers: int = 0               # No additional workers to save memory
     shuffle_buffer_size: int = 1000    # Shuffle buffer size for dataset
     max_length: int = 2048             # Sequence length for training
-    learning_rate: float = 3e-4        # From LitGPT initialization
+    learning_rate: float = 3e-5        # From LitGPT initialization
     weight_decay: float = 1e-4         # From LitGPT initialization
     
     # Generation configuration
@@ -88,9 +88,9 @@ class OptimizerConfig:
     Configuration for optimizer
     """
     optimizer: str = "AdamW"  # Using AdamW optimizer
-    learning_rate: float = 3e-4
+    learning_rate: float = 3e-5
     weight_decay: float = 1e-4
-    max_lr: float = 3e-3      # max_lr = learning_rate * 10
+    max_lr: float = 3e-4      # max_lr = learning_rate * 10
     div_factor: float = 25.0  # From OneCycleLR config
     final_div_factor: float = 100.0  # From OneCycleLR config
     pct_start: float = 0.2    # From OneCycleLR config
