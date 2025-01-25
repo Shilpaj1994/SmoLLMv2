@@ -2,4 +2,4 @@ experiments/
 references/
 S13.ipynb
 last.ckpt
-*.ckpt
+smollmv2-step=02500-val_loss=5.49.ckpt
