@@ -146,3 +146,10 @@ One day, while She had always looked at a girl, fascinated by the community, she
 --------------------------------------------------
 ```
 
+
+
+## Try it out
+
+Application Link: https://huggingface.co/spaces/Shilpaj/SmoLLMv2
+
+![Gradio Application](./app.png)
