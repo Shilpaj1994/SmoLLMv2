@@ -290,8 +290,8 @@ class LitSmollmv2(pl.LightningModule):
                 pct_start=self.pct_start,
                 div_factor=self.div_factor,
                 final_div_factor=self.final_div_factor,
-                three_phase=optim_config.three_phase,
-                anneal_strategy=optim_config.anneal_strategy
+                three_phase=OptimizerConfig.three_phase,
+                anneal_strategy=OptimizerConfig.anneal_strategy
             ),
             'interval': 'step'
         }
