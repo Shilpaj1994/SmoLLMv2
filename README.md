@@ -128,21 +128,21 @@ Following are the modifications done to speed up the model training:
 
 ```bash
 Prompt: Once upon a time
-Generated: Once upon a time, there was a small town named the phase of a curious land namedian named "Can you know a place," which tells us all the big Atlantic of her favorite white, and even a family of the fascinating world. This way, the seem like how much we have the world around theSo we'll learn more about ourselves and learn new ways to understand and the history of the world.
+Generated: Once upon a time, in a time, there lived a little girl named Mr. She loved playing outside the room and family had always been away from the corner of the magic city and the world. One sunny day, I decided to embark on something called the lush town of the numbers and the world around you. But I was another way to tell it one of a doctor and maybe even when you were trying to prepare.
 
-One day, a young helping us learn about the world around us. It's a type of disorder
+Timmy was helping the end of the friends about what happened to be a few weeks before
 --------------------------------------------------
 
 Prompt: The future of artificial intelligence
-Generated: The future of artificial intelligence in the late 10th century. This book has been tiny because the late 180s, the side of the 200th century, an foreshad century for 170 years of the World War 180s of the ' \N. You might the story of the clothing; they became known for the summary of the Civil War.
+Generated: The future of artificial intelligence in the late 19th century. She was a beautiful book with a piece of words, albeit as a group of the late 200th century. She was an elderly man named Sarah who were gone to her summer, where she came to turn it with her mind. But this left was to learn about what they were.
 
-One day, it was two fascinating history in the 17180s, and the recognition
+One day, while discussing the complexity of their work, he moved around her newfound passion for the community. Her conversation held a stronger and sustainable recognition
 --------------------------------------------------
 
 Prompt: In the distant galaxy
-Generated: In the distant galaxy, there has been an idea that little girl who lived in their favorite games. As they loved their home, they decided to think about their stories and learn how she could even have been part of his way. In this chapter, we will explore the history of the world around the world around us.
+Generated: In the distant galaxy of the bustling city of a lively little kid, there was a curious person named Alex. He was called "The Green-the Guide to the time of the late 1900s, while others worked together. He loved playing happily and any consequences of sustainability - to make more about the world around the world.
 
-At the late 1940s, we have the concept of theension of the rub and the same. You are, the author, and it was no one day. For
+One day, while She had always looked at a girl, fascinated by the community, she decided to bake up the street. It had been around for friends and family
 --------------------------------------------------
 ```
 
