@@ -362,8 +362,8 @@ def train_model(epochs=None, steps=None, ckpt_path=None, interupt_steps=SmollmCo
     
     # Initialize data module with reduced workers and batch size
     data_module = CosmopediaDataModule(
-        batch_size=SmollmConfig.batch_size,  # Reduced from 32
-        num_workers=SmollmConfig.num_workers,  # Reduced from 4
+        batch_size=SmollmConfig.batch_size,
+        num_workers=SmollmConfig.num_workers,
         shuffle_buffer_size=SmollmConfig.shuffle_buffer_size,
         max_length=SmollmConfig.block_size
     )
@@ -371,15 +371,15 @@ def train_model(epochs=None, steps=None, ckpt_path=None, interupt_steps=SmollmCo
     # Initialize model
     model = LitSmollmv2(total_epochs=epochs, total_steps=steps, interupt_steps=interupt_steps)
     
-    # Setup callbacks with reduced frequency
+    # Setup callbacks
     checkpoint_callback = ModelCheckpoint(
         dirpath='checkpoints',
         filename='smollmv2-{step:05d}-{val_loss:.2f}',
-        save_top_k=CheckpointConfig.save_top_k,  # Save only the best model
-        monitor=CheckpointConfig.monitor,  # Monitor training loss instead of validation loss
+        save_top_k=CheckpointConfig.save_top_k,
+        monitor=CheckpointConfig.monitor,
         mode=CheckpointConfig.mode,
         save_last=CheckpointConfig.save_last,
-        every_n_train_steps=CheckpointConfig.checkpoint_every,  # Reduced checkpoint frequency
+        every_n_train_steps=CheckpointConfig.checkpoint_every,
         save_on_train_epoch_end=CheckpointConfig.save_on_train_epoch_end
     )
     
@@ -388,16 +388,13 @@ def train_model(epochs=None, steps=None, ckpt_path=None, interupt_steps=SmollmCo
     # Setup logger
     logger = TensorBoardLogger("lightning_logs", name="smollmv2", log_graph=True)
     
-    # Add gradient scaler for mixed precision training
-    scaler = torch.cuda.amp.GradScaler() if torch.cuda.is_available() else None
-    
-    # Initialize trainer with performance monitoring
+    # Initialize trainer with mixed precision training
     trainer_kwargs = {
         'accelerator': TrainerConfig.accelerator,
         'devices': TrainerConfig.devices,
         'callbacks': [checkpoint_callback, lr_monitor],
         'logger': logger,
-        'precision': TrainerConfig.precision,
+        'precision': '16-mixed',  # Use mixed precision training
         'log_every_n_steps': TrainerConfig.log_every_n_steps,
         'strategy': TrainerConfig.strategy,
         'deterministic': TrainerConfig.deterministic,
