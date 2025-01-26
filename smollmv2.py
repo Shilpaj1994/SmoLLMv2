@@ -196,15 +196,24 @@ class SmollmV2(nn.Module):
         super().__init__()
         self.config = config
 
+        # Convert model to float16 by default
+        dtype = torch.float16 if torch.cuda.is_available() else torch.float32
+        
         self.transformer = nn.ModuleDict(dict(
-            wte = nn.Embedding(config.vocab_size, config.n_embd),
+            # Use float16 for embeddings
+            wte = nn.Embedding(config.vocab_size, config.n_embd).to(dtype),
             h = nn.ModuleList([Block(config) for _ in range(config.n_layer)]),
             ln_f = nn.LayerNorm(config.n_embd, bias=False),
         ))
-        self.lm_head = nn.Linear(config.n_embd, config.vocab_size, bias=False)
+        
+        # Use float16 for final linear layer
+        self.lm_head = nn.Linear(config.n_embd, config.vocab_size, bias=False).to(dtype)
 
-        # weight sharing
+        # weight sharing (in same dtype)
         self.transformer.wte.weight = self.lm_head.weight
+        
+        # Convert all parameters to float16
+        self.to(dtype)
 
         # weight initialization
         self.apply(self._init_weights)

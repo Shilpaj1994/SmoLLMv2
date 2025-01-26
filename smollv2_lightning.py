@@ -71,9 +71,13 @@ class LitSmollmv2(pl.LightningModule):
             print("Compiling model for faster training...")
             self.model = torch.compile(self.model)
         
-        # Print total model parameters
-        total_params = sum(p.numel() for p in self.model.parameters())
-        print(f"Total model parameters: {total_params:,}\n")
+        # Enable gradient checkpointing to save memory
+        if hasattr(self.model, 'gradient_checkpointing_enable'):
+            self.model.gradient_checkpointing_enable()
+        
+        # Print model size info
+        model_size = sum(p.numel() * p.element_size() for p in self.model.parameters()) / (1024 * 1024)  # Size in MB
+        print(f"Model size in memory: {model_size:.2f} MB")
         
         # OneCycleLR parameters from OptimizerConfig
         self.max_lr = OptimizerConfig.max_lr
@@ -257,15 +261,20 @@ class LitSmollmv2(pl.LightningModule):
         """
         Method to configure the optimizer and scheduler
         """
-        # Create an instance of OptimizerConfig
-        optim_config = OptimizerConfig()
-        
-        optimizer = getattr(optim, optim_config.optimizer)(
-            self.parameters(),
-            lr=self.hparams.learning_rate,
-            weight_decay=self.hparams.weight_decay,
-            **optim_config.optimizer_kwargs
-        )
+        # Use Adam 8-bit if available
+        try:
+            import bitsandbytes as bnb
+            optimizer = bnb.optim.Adam8bit(
+                self.parameters(),
+                lr=self.hparams.learning_rate,
+                weight_decay=self.hparams.weight_decay,
+            )
+        except ImportError:
+            optimizer = optim.Adam(
+                self.parameters(),
+                lr=self.hparams.learning_rate,
+                weight_decay=self.hparams.weight_decay,
+            )
         
         # Calculate total steps
         if self.total_steps is None:
